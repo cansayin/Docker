@@ -1,0 +1,357 @@
+
+
+#linkedin : https://www.linkedin.com/in/can-sayın-b332a157/
+#cansayin.com
+
+
+Cheat Sheet
+ 
+# ###Container###
+ 
+##Run Container:##
+ 
+`docker container run image:tag`
+ 
+Example: `docker container run nginx:latest`
+___
+## Running containers in Detach mode (-d):##
+ 
+`docker container run -d image:tag`
+ 
+Example: `docker container run -d nginx:latest`
+___
+## Starting a container with another application instead of the default application
+ 
+`docker container run image:tag uygulama`
+ 
+Example: `docker container run ubuntu:latest ping 127.0.0.1`
+___
+## Running the container with a name ##
+ 
+`docker container run --name isim image:tag`
+ 
+Example: `docker container run --name container1 -d nginx:latest`
+___
+## Running another application in a running container:##
+ 
+`docker container exec container_id|ya da|container_name uygulama`
+ 
+Example: `docker container exec 12a793b3fec0 ping 127.0.0.1`
+___
+## Creating a shell connection to a running container:##
+ 
+`docker container exec -it container_id|ya da|container_name sh`
+ 
+Example: `docker container exec -it 12a793b3fec0 sh`
+___
+## Creating container in detach mode and with shell connection (dit):##
+ 
+`docker container run -dit image:tag sh`
+ 
+Example: `docker container run -dit nginx:latest sh`
+___
+## Connecting to container created in detach mode and with shell connection:##
+ 
+`docker attach container_id|ya da|container_name`
+ 
+Example: `docker attach 12a793b3fec0`
+___
+## Container stop:##
+ 
+`docker container stop container_id|ya da|container_name`
+ 
+Example: `docker container stop 12a793b3fec0`
+___
+##Container delete:##
+ 
+`docker container rm container_id|ya da|container_name`
+ 
+Example: `docker container rm 12a793b3fec0`
+___
+##Delete running container##
+ 
+`docker container rm -f container_id|ya da|container_name`
+ 
+Example: `docker container rm -f 12a793b3fec0`
+___
+## When the container is closed, it is deleted at the same time (-rm):##
+ 
+`docker container run -rm image:tag`
+ 
+Example: `docker container run -rm nginx:latest` 
+___
+## Examine the details about the container:##
+ 
+`docker container inspect container_id|ya da|container_name`
+ 
+Example: `docker container inspect 12a793b3fec0`
+___
+## Deleting all containers (running and stopped) on the system ##
+ 
+`docker container rm -f $(docker ps -aq)`
+___
+## List running containers on the system:##
+ 
+`docker container ls` ya da
+ 
+`docker container ps`
+___
+## List all containers on the system:##
+ 
+`docker container ls -a` ya da
+ 
+`docker container ps -a`
+___
+## List processes in running container:##
+ 
+`docker top container_id|ya da|container_name`
+ 
+Example: `docker top 12a793b3fec0`
+___
+## See the CPU, Ram, I/O usage of the running container:##
+ 
+`docker stats container_id|ya da|container_name`
+ 
+Example: `docker stats 12a793b3fec0`
+___
+## Limiting container's memory usage (--memory, --memory-swap):##
+ 
+`docker container run --memory=rakam(b,k,m,g) --memory-swap=rakam(b,k,m,g) image:tag`
+ 
+Example: `docker container run --memory=1g --memory-swap=2g nginx:latest` (memory-swap ile swap alanı da tanımlayabiliriz.b=byte k=kilobyte m=megabyte g=gigabyte)
+___
+## Limiting container's cpu usage (--cpus, --cpuset-cpus):##
+ 
+`docker container run --cpus="core_adeti" image:tag`
+ 
+Example: `docker container run --cpus="3" nginx:latest` (sistemden kaç core'a erişebileceğini belirledik)
+ 
+`docker container run --cpuset-cpus="core_numarası" image:tag`
+ 
+Example: `docker container run --cpuset-cpus="0,4" nginx:latest`  
+___
+## Container environment variable definition:##
+ 
+`docker container run --env enviroment_variable=değeri image:tag`
+ 
+Example: `docker container run --env VAR1=test1 --env VAR2=test2 nginx:latest`
+___
+## Copying files from container to host:##
+ 
+`docker cp container_id|ya da|container_name:path host_path`
+ 
+Example: `docker cp 12a793b3fec0:/usr/src/uygulama/ .`
+ 
+___
+___
+___
+ 
+# ###Image###
+ 
+## Login to registery via Docker CLI:##
+ 
+`docker login registery_url`
+ 
+Example: `docker login localhost:8080`
+___
+## Taking an image into the system:##
+ 
+`docker image pull image:tag`
+ 
+Example: `docker image pull nginx:latest`
+___
+## Posting image to Docker hub (or any other repository):##
+ 
+`docker image push repository/image:tag`
+ 
+Example: `docker image push cansayin/adanzyedocker:latest`
+___
+## Adding a new tag to an existing image ##
+ 
+`docker image tag image:tag yeniimage:tag`
+ 
+Example: `docker image tag nginx:latest ozgurozturknet\nginx:v1`
+___
+## Reviewing details about Image:##
+ 
+`docker image inspect image:tag`
+ 
+Example: `docker image inspect nginx:latest`
+___
+## List image layers:##
+ 
+`docker image history image:tag`
+ 
+Example: `docker image history nginx:latest`
+___
+## Creating a new image using Dockerfile:##
+ 
+`docke image build -t image:tag .`
+ 
+Example: `docker image build -t ozgurozturknet\merhaba-dunya:latest .`  
+___
+## Using build arg when creating image:##
+ 
+`docker image build --build-arg arg=deger -t image:tag .`
+ 
+Example: `docker image build --build-arg VERSION=3.7.1 -t nginx:latest .`
+___
+## List all images in the system:##
+ 
+`docker image ls`
+___
+## Deleting an image from the system:##
+ 
+`docker image rm image:tag`
+ 
+Example: `docker image rm nginx:latest`
+___
+## Creating image from container:##
+ 
+`docker commit container_id|ya da|container_name image:tag`
+ 
+Example: `docker commit 12a793b3fec0 cansayin/img:latest`
+___
+## Losing image to a file and creating image from a saved file:##
+ 
+`docker save image:tag -o filename.tar`
+ 
+Example: `docker save cansayin/img:latest -o image.tar`
+ 
+`docker load -i filename.tar`
+ 
+Example: `docker load -i imagecon1.tar`
+ 
+___
+___
+___
+ 
+# ###Volume###
+ 
+## Creating a volume:##
+ 
+`docker volume create volume_name`
+ 
+Example: `docker volume create ilkvolume`
+___
+## Reviewing the details about the volume:##
+ 
+`docker volume inspect volume_id|ya da|volume_name`
+ 
+Example: `docker volume inspect ilkvolume`
+___
+## List all volumes in the system:##
+ 
+`docker volume ls`
+___
+## Bind Volume to container (-v):##
+ 
+`docker container run -v volume_name:container_icindeki_path image:tag`
+ 
+Example: `docker container run -v ilkvolume:/var/www/html image:tag`
+___
+## Mount volume to container read only (:ro):##
+ 
+`docker container run -v volume_name:container_icindeki_path:ro image:tag`
+ 
+Example: `docker container run -v ilkvolume:/var/www/html:ro image:tag`
+___
+## Bind mount a folder or file on the host:##
+ 
+`docker container run -v host_klasör_path:container_icindeki_path image:tag`
+ 
+`docker container run -v c:\websitesi:/usr/share/nginx/html nginx:latest `
+___
+##Volume Delete:##
+ 
+`docker volume rm volume_name`
+ 
+Example: `docker volume rm ilkvolume`
+ 
+___
+___
+___
+ 
+# ###Network###
+ 
+## Creating a user-defined bridge network (bridge):##
+ 
+`docker network create --driver=bridge network_name`
+ 
+Example: `docker network create --driver=bridge kopru`
+___
+## Creating a user-defined bridge network (by specifying ip information):##
+ 
+`docker network create --driver=bridge --subnet=cidr --ip-range=cdir --gateway=ip_adresi network_name `
+ 
+Example: `docker network create --driver=bridge --subnet=10.10.0.0/16 --ip-range=10.10.10.0/24 --gateway=10.10.10.10 kopru`
+___
+## List all volumes in the system:##
+ 
+`docker network ls`
+___
+## Reviewing the details about the volume:##
+ 
+`docker network inspect network_name`
+ 
+Example: `docker network inspect kopru`
+___
+## Run the container by connecting it to a non-default network:##
+ 
+`docker container run --network network_name image:tag`
+ 
+Example: `docker container run --network kopru nginx:latest`
+___
+## Connecting a running container to another network:##
+ 
+`docker network connect network_name container_id|ya da|container_name`
+ 
+Example: `docker network connect kopru 12a793b3fec0`
+___
+## Disconnecting a running container from the network it is connected to:##
+ 
+`docker network disconnect network_name container_id|ya da|container_name`
+ 
+Example: `docker network disconnect kopru 12a793b3fec0`
+___
+## Run a container by port publishing (-p):##
+ 
+docker container run -p host_portu:container_portu/tcp_yada_udp image:tag
+ 
+Example: docker container run -p 8080:80 -p 53:53/udp nginx:latest
+ 
+___
+___
+___
+ 
+# ###Logging###
+ 
+## Seeing the logs created by the container:##
+ 
+`docker logs container_id|ya da|container_name`
+ 
+Example: `docker logs 12a793b3fec0`
+___
+## To see the logs created by the container in long format in detail:##
+ 
+`docker logs --details container_id|ya da|container_name`
+ 
+Example: `docker logs --details 12a793b3fec0`
+___
+## To see the logs created by the container in a certain date range:##
+ 
+`docker logs --since tarih_saat --until tarih_saat container_id|ya da|container_name`
+ 
+Example: `docker logs --since 2020-01-13T11:34:43.154304300Z 12a793b3fec0`  
+___
+## To see a certain number of recent logs created by the container:##
+ 
+`docker logs --tail sayı container_id|ya da|container_name`
+ 
+Example: `docker logs --tail 10 12a793b3fec0` (son 10 log çıktısını listeler)
+___
+## Monitoring the logs created by the container instantly:##
+ 
+`docker logs -f container_id|ya da|container_name`
+ 
+Example: `docker logs -f 12a793b3fec0` (loglar oluştukça ekranda gözükecektir.  
